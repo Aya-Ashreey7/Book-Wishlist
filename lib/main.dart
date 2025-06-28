@@ -2,6 +2,8 @@ import 'package:book_wishlist/MainLayout.dart';
 import 'package:flutter/material.dart';
 import 'DioService.dart';
 import 'bookDetails.dart';
+import 'global_favorites.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -157,23 +159,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   StatefulBuilder(
                                     builder: (context, setLocalState) {
-                                      return MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            isFavorite
-                                                ? Icons.favorite
-                                                : Icons.favorite_border,
-                                            color: isFavorite
-                                                ? Colors.red
-                                                : Colors.white,
-                                          ),
-                                          onPressed: () {
-                                            setLocalState(() {
-                                              isFavorite = !isFavorite;
-                                            });
-                                          },
+                                      final bool isFav = isBookFavorited(book['id'].toString());
+
+                                      return IconButton(
+                                        icon: Icon(
+                                          isFav ? Icons.favorite : Icons.favorite_border,
+                                          color: isFav ? Colors.red : Colors.white,
                                         ),
+                                        onPressed: () {
+                                          setLocalState(() {
+                                            toggleFavorite(book);
+                                          });
+                                        },
                                       );
                                     },
                                   ),
