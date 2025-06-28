@@ -79,10 +79,59 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text("Authors: ${_book!['authors']}"),
-                              Text("Publisher: ${_book!['publisher']}"),
-                              Text("Pages: ${_book!['pages']}"),
-                              Text("Year: ${_book!['year']}"),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Authors : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(text: _book!['authors']),
+                                  ],
+                                ),
+                              ),
+
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Publisher : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(text: _book!['publisher']),
+                                  ],
+                                ),
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Pages : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(text: _book!['pages']),
+                                  ],
+                                ),
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Year : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(text: _book!['year']),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
