@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart';
 import 'MainLayout.dart';
+import 'register_page.dart';
+import 'auth_service.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final Map<String, dynamic>? bookToFavorite;
+  const LoginPage({super.key, this.bookToFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,11 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // هنا ممكن تضيف validation أو API
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MainLayout()),
-                );
+                final email = emailController.text.trim();
+                if (email.isNotEmpty && passwordController.text.isNotEmpty) {
+                  loginUser(email);
+                  Navigator.pop(context, 'success');
+                }
               },
               child: const Text("Login"),
             ),

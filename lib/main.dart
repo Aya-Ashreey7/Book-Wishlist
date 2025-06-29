@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'mainlayout.dart'; // ✅ استيراد MainLayout من ملف خارجي
 import 'DioService.dart';
 import 'bookDetails.dart';
 import 'global_favorite.dart';
-import 'MainLayout.dart';
+import 'login_page.dart';
+import 'auth_service.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+// ✅ التطبيق يبدأ من هنا
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -20,12 +23,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const MainLayout(),
+      home: const MainLayout(), // ✅ استخدام MainLayout كشاشة رئيسية
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
+// ✅ شاشة استعراض الكتب (يتم استدعاؤها من MainLayout)
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -171,19 +175,32 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           StatefulBuilder(
                             builder: (context, setLocalState) {
-                              final isFav =
-                              isBookFavorited(book['id'].toString());
+                              final isFav = isBookFavorited(book['id'].toString());
                               return IconButton(
                                 icon: Icon(
-                                  isFav
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
+                                  isFav ? Icons.favorite : Icons.favorite_border,
                                   color: isFav ? Colors.red : Colors.white,
                                 ),
-                                onPressed: () {
-                                  setLocalState(() {
-                                    toggleFavorite(book);
-                                  });
+                                onPressed: () async {
+                                  if (!isLoggedIn()) {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            LoginPage(bookToFavorite: book),
+                                      ),
+                                    );
+
+                                    if (result == 'success') {
+                                      setLocalState(() {
+                                        toggleFavorite(book);
+                                      });
+                                    }
+                                  } else {
+                                    setLocalState(() {
+                                      toggleFavorite(book);
+                                    });
+                                  }
                                 },
                               );
                             },
