@@ -1,6 +1,7 @@
 import 'package:book_wishlist/main.dart' show MyHomePage;
 import 'package:flutter/material.dart';
 import 'package:book_wishlist/favorite.dart';
+import 'package:book_wishlist/login_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -15,7 +16,7 @@ class _MainLayoutState extends State<MainLayout> {
   final List<Widget> _screens = [
     const MyHomePage(), // الصفحة الرئيسية من main.dart
     const FavoritePage(), // صفحة المفضلة
-    const Center(child: Text('Account')), // صفحة الحساب
+    const LoginPage() ,// صفحة الحساب
   ];
 
   void _onItemTapped(int index) {
