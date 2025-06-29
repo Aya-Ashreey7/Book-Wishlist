@@ -84,19 +84,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: _isSearching
             ? TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Search books...',
-            border: InputBorder.none,
-          ),
-          onSubmitted: (query) {
-            if (query.trim().isNotEmpty) {
-              _performSearch(query.trim());
-            }
-          },
-        )
-            : const Text("All Books"),
+                controller: _searchController,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Search books...',
+                  border: InputBorder.none,
+                ),
+                onSubmitted: (query) {
+                  if (query.trim().isNotEmpty) {
+                    _performSearch(query.trim());
+                  }
+                },
+              )
+            : const Text(" Book Store"),
         actions: [
           IconButton(
             icon: Icon(_isSearching ? Icons.close : Icons.search),
@@ -109,112 +109,119 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: GridView.builder(
-          padding: const EdgeInsets.only(top: 8, bottom: 16),
-          itemCount: _books.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.65,
-          ),
-          itemBuilder: (context, index) {
-            final book = _books[index];
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        BookDetailsPage(bookId: book['id'].toString()),
-                  ),
-                );
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.network(
-                        book['image'],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.7),
-                              Colors.transparent,
-                            ],
-                          ),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: GridView.builder(
+                padding: const EdgeInsets.only(top: 8, bottom: 16),
+                itemCount: _books.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.65,
+                ),
+                itemBuilder: (context, index) {
+                  final book = _books[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              BookDetailsPage(bookId: book['id'].toString()),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 8,
-                      left: 8,
-                      right: 8,
-                      child: Row(
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
                         children: [
-                          Expanded(
-                            child: Text(
-                              book['title'],
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                          Positioned.fill(
+                            child: Image.network(
+                              book['image'],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                    Colors.black.withOpacity(0.7),
+                                    Colors.transparent,
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                          StatefulBuilder(
-                            builder: (context, setLocalState) {
-                              final isFav = isBookFavorited(book['id'].toString());
-                              return IconButton(
-                                icon: Icon(
-                                  isFav ? Icons.favorite : Icons.favorite_border,
-                                  color: isFav ? Colors.red : Colors.white,
+                          Positioned(
+                            bottom: 8,
+                            left: 8,
+                            right: 8,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    book['title'],
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
-                                onPressed: () async {
-                                  if (!isLoggedIn()) {
-                                    final result = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            LoginPage(bookToFavorite: book),
-                                      ),
+                                StatefulBuilder(
+                                  builder: (context, setLocalState) {
+                                    final isFav = isBookFavorited(
+                                      book['id'].toString(),
                                     );
+                                    return IconButton(
+                                      icon: Icon(
+                                        isFav
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color: isFav
+                                            ? Colors.red
+                                            : Colors.white,
+                                      ),
+                                      onPressed: () async {
+                                        if (!isLoggedIn()) {
+                                          final result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => LoginPage(
+                                                bookToFavorite: book,
+                                              ),
+                                            ),
+                                          );
 
-                                    if (result == 'success') {
-                                      setLocalState(() {
-                                        toggleFavorite(book);
-                                      });
-                                    }
-                                  } else {
-                                    setLocalState(() {
-                                      toggleFavorite(book);
-                                    });
-                                  }
-                                },
-                              );
-                            },
+                                          if (result == 'success') {
+                                            setLocalState(() {
+                                              toggleFavorite(book);
+                                            });
+                                          }
+                                        } else {
+                                          setLocalState(() {
+                                            toggleFavorite(book);
+                                          });
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
+            ),
     );
   }
 }

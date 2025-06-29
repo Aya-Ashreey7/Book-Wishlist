@@ -20,6 +20,8 @@ class _RegisterPageState extends State<RegisterPage> {
     await prefs.setString('name', nameController.text);
     await prefs.setString('email', emailController.text);
     await prefs.setString('password', passwordController.text);
+      await prefs.setString('profileImage', 'assets/default_user.png'); 
+
   }
 
   void _register() async {

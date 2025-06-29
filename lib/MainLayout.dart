@@ -1,7 +1,7 @@
+import 'package:book_wishlist/accountPage.dart';
 import 'package:book_wishlist/main.dart' show MyHomePage;
 import 'package:flutter/material.dart';
 import 'package:book_wishlist/favorite.dart';
-import 'package:book_wishlist/login_page.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -16,7 +16,7 @@ class _MainLayoutState extends State<MainLayout> {
   final List<Widget> _screens = [
     const MyHomePage(), // الصفحة الرئيسية من main.dart
     const FavoritePage(), // صفحة المفضلة
-    const LoginPage() ,// صفحة الحساب
+    const AccountPage(), // صفحة الحساب
   ];
 
   void _onItemTapped(int index) {
@@ -35,37 +35,14 @@ class _MainLayoutState extends State<MainLayout> {
         backgroundColor: Colors.white,
         showUnselectedLabels: true,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorite',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
