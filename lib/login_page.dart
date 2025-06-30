@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'MainLayout.dart';
 import 'register_page.dart';
+import'global_favorite.dart';
 import 'auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,10 +32,18 @@ class _LoginPageState extends State<LoginPage> {
 
     if (emailController.text == savedEmail &&
         passwordController.text == savedPassword) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainLayout()),
-      );
+      await loginUser(savedEmail); // ✅ Save user email
+
+      // ✅ Auto-favorite the book if passed from Book Store
+      if (widget.bookToFavorite != null) {
+        toggleFavorite(widget.bookToFavorite!);
+      }
+
+      // ✅ Return success if needed
+      Navigator.pop(context, 'success');
+
+      // Or go to MainLayout if login is standalone
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainLayout()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Invalid email or password.")),
@@ -91,9 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     validator: (value) =>
-                        value != null && value.length < 6
-                            ? "Password must be 6+ chars"
-                            : null,
+                    value != null && value.length < 6
+                        ? "Password must be 6+ chars"
+                        : null,
                   ),
 
                   const SizedBox(height: 30),
@@ -138,3 +146,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

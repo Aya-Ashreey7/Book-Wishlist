@@ -199,6 +199,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                           );
 
                                           if (result == 'success') {
+                                            // Reload user + favorites
+                                            await loadCurrentUser();
+                                            await loadFavorites();
+
                                             setLocalState(() {
                                               toggleFavorite(book);
                                             });

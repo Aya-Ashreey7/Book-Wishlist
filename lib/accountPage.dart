@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 import 'register_page.dart';
+import 'auth_service.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -20,7 +21,7 @@ class _AccountPageState extends State<AccountPage> {
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
 
-  bool get isLoggedIn => name != null && email != null;
+  bool get isUserLoggedIn => isLoggedIn();
 
   @override
   void initState() {
@@ -30,16 +31,20 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      name = prefs.getString('name');
-      email = prefs.getString('email');
-      phone = prefs.getString('phone') ?? '';
-      imagePath = prefs.getString('profileImage') ?? 'assets/default_user.png';
+    await loadCurrentUser(); // ✅ load currentUserEmail
 
-      nameController.text = name ?? '';
-      emailController.text = email ?? '';
-      phoneController.text = phone ?? '';
-    });
+    if (currentUserEmail != null) {
+      setState(() {
+        name = prefs.getString('name');
+        email = currentUserEmail;
+        phone = prefs.getString('phone') ?? '';
+        imagePath = prefs.getString('profileImage') ?? 'assets/default_user.png';
+
+        nameController.text = name ?? '';
+        emailController.text = currentUserEmail!;
+        phoneController.text = phone ?? '';
+      });
+    }
   }
 
   Future<void> _saveProfile() async {
@@ -63,15 +68,15 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: isLoggedIn ?
-      AppBar(
+      appBar: isUserLoggedIn
+          ? AppBar(
         backgroundColor: Colors.blue,
         title: const Text("Profile", style: TextStyle(color: Colors.white)),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       )
-      : null ,
-      body: isLoggedIn ? _buildProfileUI() : _buildGuestUI(),
+          : null,
+      body: isUserLoggedIn ? _buildProfileUI() : _buildGuestUI(),
     );
   }
 
@@ -81,7 +86,6 @@ class _AccountPageState extends State<AccountPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Profile Image
           Stack(
             alignment: Alignment.bottomRight,
             children: [
@@ -104,8 +108,6 @@ class _AccountPageState extends State<AccountPage> {
           if (phone != null && phone!.isNotEmpty)
             Text(phone!, style: const TextStyle(color: Colors.grey)),
           const SizedBox(height: 32),
-
-          // Name
           const Align(
             alignment: Alignment.centerLeft,
             child: Text("YOUR NAME", style: TextStyle(color: Colors.grey)),
@@ -115,8 +117,6 @@ class _AccountPageState extends State<AccountPage> {
             decoration: const InputDecoration(border: UnderlineInputBorder()),
           ),
           const SizedBox(height: 24),
-
-          // Email
           const Align(
             alignment: Alignment.centerLeft,
             child: Text("YOUR EMAIL", style: TextStyle(color: Colors.grey)),
@@ -126,8 +126,6 @@ class _AccountPageState extends State<AccountPage> {
             decoration: const InputDecoration(border: UnderlineInputBorder()),
           ),
           const SizedBox(height: 24),
-
-          // Phone
           const Align(
             alignment: Alignment.centerLeft,
             child: Text("YOUR PHONE", style: TextStyle(color: Colors.grey)),
@@ -137,8 +135,6 @@ class _AccountPageState extends State<AccountPage> {
             decoration: const InputDecoration(border: UnderlineInputBorder()),
           ),
           const SizedBox(height: 40),
-
-          // Update Button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -172,8 +168,6 @@ class _AccountPageState extends State<AccountPage> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
-
-            // Login Button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -181,10 +175,7 @@ class _AccountPageState extends State<AccountPage> {
                   width: 200,
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    label: const Text("Login", style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -202,24 +193,15 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 12),
-
-            // Sign Up Button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 200,
                   child: OutlinedButton.icon(
-                    icon: const Icon(
-                      Icons.app_registration,
-                      color: Colors.black,
-                    ),
-                    label: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.black),
-                    ),
+                    icon: const Icon(Icons.app_registration, color: Colors.black),
+                    label: const Text("Sign Up", style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Colors.black),
                       padding: const EdgeInsets.symmetric(vertical: 16),
