@@ -32,18 +32,16 @@ class _LoginPageState extends State<LoginPage> {
 
     if (emailController.text == savedEmail &&
         passwordController.text == savedPassword) {
-      await loginUser(savedEmail); // ✅ Save user email
+      await loginUser(savedEmail); 
 
-      // ✅ Auto-favorite the book if passed from Book Store
       if (widget.bookToFavorite != null) {
         toggleFavorite(widget.bookToFavorite!);
       }
 
-      // ✅ Return success if needed
+      //  Return success if needed
       Navigator.pop(context, 'success');
 
-      // Or go to MainLayout if login is standalone
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainLayout()));
+     
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Invalid email or password.")),

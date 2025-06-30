@@ -14,9 +14,9 @@ class _MainLayoutState extends State<MainLayout> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const MyHomePage(), // الصفحة الرئيسية من main.dart
-    const FavoritePage(), // صفحة المفضلة
-    const AccountPage(), // صفحة الحساب
+    const MyHomePage(), 
+    const FavoritePage(), 
+    const AccountPage(), 
   ];
 
   void _onItemTapped(int index) {

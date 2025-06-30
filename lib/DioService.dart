@@ -1,25 +1,3 @@
-// import 'package:dio/dio.dart';
-
-// class DioService {
-//   final Dio _dio = Dio();
-
-//   // Fetch All books
-//   Future<List<dynamic>> fetchBooksBybookId(int bookId) async {
-//     final response = await _dio.get(
-//       'https://www.dbooks.org/api/recent',
-//       queryParameters: {'bookId': bookId},
-//     );
-//     return response.data;
-//   }
-
-//   // Bonus: Delete a post by ID
-//   // Future<void> deletePost(int postId) async {
-//   //   final response = await _dio.delete(
-//   //     'https://jsonplaceholder.typicode.com/posts/$postId',
-//   //   );
-//   //   print('Deleted: ${response.statusCode}'); // Usually returns 200
-//   // }
-// }
 
 import 'package:dio/dio.dart';
 

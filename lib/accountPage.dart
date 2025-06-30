@@ -31,14 +31,15 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
-    await loadCurrentUser(); // ✅ load currentUserEmail
+    await loadCurrentUser();
 
     if (currentUserEmail != null) {
       setState(() {
         name = prefs.getString('name');
         email = currentUserEmail;
         phone = prefs.getString('phone') ?? '';
-        imagePath = prefs.getString('profileImage') ?? 'assets/default_user.png';
+        imagePath =
+            prefs.getString('profileImage') ?? 'assets/default_user.png';
 
         nameController.text = name ?? '';
         emailController.text = currentUserEmail!;
@@ -70,11 +71,14 @@ class _AccountPageState extends State<AccountPage> {
       backgroundColor: Colors.white,
       appBar: isUserLoggedIn
           ? AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text("Profile", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-      )
+              backgroundColor: Colors.deepPurple,
+              title: const Text(
+                "Profile",
+                style: TextStyle(color: Colors.white),
+              ),
+              centerTitle: true,
+              iconTheme: const IconThemeData(color: Colors.white),
+            )
           : null,
       body: isUserLoggedIn ? _buildProfileUI() : _buildGuestUI(),
     );
@@ -89,14 +93,24 @@ class _AccountPageState extends State<AccountPage> {
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              CircleAvatar(radius: 50, backgroundImage: AssetImage(imagePath!)),
+              if (imagePath == null)
+                const CircularProgressIndicator()
+              else
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage(imagePath!),
+                ),
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.edit, color: Colors.blue, size: 20),
+                child: const Icon(
+                  Icons.edit,
+                  color: Colors.deepPurple,
+                  size: 20,
+                ),
               ),
             ],
           ),
@@ -139,14 +153,17 @@ class _AccountPageState extends State<AccountPage> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.deepPurple,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
               onPressed: _saveProfile,
-              child: const Text("UPDATE", style: TextStyle(fontSize: 16)),
+              child: const Text(
+                "UPDATE",
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
             ),
           ),
         ],
@@ -175,9 +192,12 @@ class _AccountPageState extends State<AccountPage> {
                   width: 200,
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.login, color: Colors.white),
-                    label: const Text("Login", style: TextStyle(color: Colors.white)),
+                    label: const Text(
+                      "Login",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.deepPurple,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -200,10 +220,16 @@ class _AccountPageState extends State<AccountPage> {
                 SizedBox(
                   width: 200,
                   child: OutlinedButton.icon(
-                    icon: const Icon(Icons.app_registration, color: Colors.black),
-                    label: const Text("Sign Up", style: TextStyle(color: Colors.black)),
+                    icon: const Icon(
+                      Icons.app_registration,
+                      color: Colors.deepPurple,
+                    ),
+                    label: const Text(
+                      "Sign Up",
+                      style: TextStyle(color: Colors.deepPurple),
+                    ),
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.black),
+                      side: const BorderSide(color: Colors.deepPurple),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

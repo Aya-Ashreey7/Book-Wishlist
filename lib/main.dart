@@ -82,12 +82,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
         title: _isSearching
             ? TextField(
                 controller: _searchController,
                 autofocus: true,
+                style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   hintText: 'Search books...',
+                  hintStyle: TextStyle(color: Colors.white),
                   border: InputBorder.none,
                 ),
                 onSubmitted: (query) {
@@ -96,14 +99,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                 },
               )
-            : const Text(" Book Store"),
+            : const Text(" Book Store", style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            icon: Icon(
+              _isSearching ? Icons.close : Icons.search,
+              color: Colors.white,
+            ),
             onPressed: _toggleSearch,
           ),
         ],
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
       ),
       body: _loading
