@@ -2,8 +2,7 @@
 
 A new Flutter project.
 
-![Uploading 1.png…]()
-
+<img width="545" height="768" alt="Image" src="https://github.com/user-attachments/assets/2b133242-7b94-4b55-86c4-32654dfc4462" />
 
 ## Getting Started
 
